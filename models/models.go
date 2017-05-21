@@ -1,16 +1,26 @@
 package models
 
 import (
-    "github.com/astaxie/beego/orm"
+    "time"
 )
 
 type Post struct {
-    Id          int
+    Id          int `gorm:"primary_key"`
+    CreatedAt   time.Time
+    UpdatedAt   time.Time
+    DeletedAt   *time.Time
     Title       string
     Content     string
+    ImagePath   string
+    Tags        []Tag   `gorm:"many2many:post_tags;"`    
 }
 
-func init() {
-    // Need to register model in init
-    orm.RegisterModel(new(Post))
+
+type Tag struct {
+    Id              int `gorm:"primary_key"`
+    CreatedAt       time.Time
+    UpdatedAt       time.Time
+    DeletedAt       *time.Time
+    Title           string
+    Description     string
 }

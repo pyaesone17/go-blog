@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+    "hello/database"
+    models "hello/models"
 )
 
 type MainController struct {
@@ -9,8 +11,11 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.tpl"
+    var posts []*models.Post
+    database.DBCon.Preload("Tags").Find(&posts);
+
+    c.Data["title"] = "Myanmar News"
+    c.Data["posts"] = posts
+    c.TplName = "blog/index.tpl"
 }
 
